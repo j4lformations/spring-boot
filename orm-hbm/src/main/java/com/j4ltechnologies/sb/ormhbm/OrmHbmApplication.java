@@ -1,0 +1,12 @@
+package com.j4ltechnologies.sb.ormhbm;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class OrmHbmApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(OrmHbmApplication.class, args);
+    }
+}

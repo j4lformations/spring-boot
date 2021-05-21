@@ -1,3 +1,10 @@
+*.git/
+*.idea
+*.settings/
+*.project
+*.classpath
+*.iml
+*.springBeans
 target/
 pom.xml.tag
 pom.xml.releaseBackup
