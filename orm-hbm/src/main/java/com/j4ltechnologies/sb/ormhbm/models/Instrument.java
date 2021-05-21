@@ -1,8 +1,6 @@
 package com.j4ltechnologies.sb.ormhbm.models;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.Column;
@@ -19,11 +17,13 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@ToString(of = {"nom"})
+@EqualsAndHashCode(of = {"nom"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Instrument {
 
     @Id
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     String nom;
 
     @ManyToMany(mappedBy = "instruments")

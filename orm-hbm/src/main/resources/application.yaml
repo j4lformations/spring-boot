@@ -12,3 +12,9 @@ spring:
           batch_size: 10
           fetch_size: 50
 
+  h2:
+    console:
+      enabled: true
+
+  datasource:
+    url: 'jdbc:h2:file:~/H2-DB/orm-hbm;DB_CLOSE_ON_EXIT=false'
