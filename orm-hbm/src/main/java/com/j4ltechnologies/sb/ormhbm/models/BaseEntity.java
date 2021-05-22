@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -18,10 +19,10 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @MappedSuperclass
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseEntity {
+public abstract class BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +35,5 @@ public abstract class BaseEntity {
     LocalDateTime createdAt;
 
     @LastModifiedDate
-    LocalDateTime updatedAt;
-
+    LocalDateTime lastModifiedDate;
 }

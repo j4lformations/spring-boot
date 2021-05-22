@@ -1,5 +1,6 @@
 package com.j4ltechnologies.sb.ormhbm.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,12 +18,11 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@ToString(of = {"titre"})
 @NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(of = {"titre"})
+@ToString(of = {"titre"})
+@EqualsAndHashCode(of = {"titre", "musicien"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Album extends BaseEntity {
+public class Album extends BaseEntity{
 
     @Column(nullable = false, unique = true, length = 100)
     String titre;
@@ -30,6 +30,7 @@ public class Album extends BaseEntity {
     LocalDate dds;
 
     @ManyToOne
-    @JoinColumn(name = "musicienId")
+    @JoinColumn(name = "MUSICIEN_ID")
+    @JsonIgnore
     Musicien musicien;
 }

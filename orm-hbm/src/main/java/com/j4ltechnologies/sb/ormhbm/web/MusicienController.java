@@ -1,8 +1,12 @@
 package com.j4ltechnologies.sb.ormhbm.web;
 
+import com.j4ltechnologies.sb.ormhbm.models.Album;
+import com.j4ltechnologies.sb.ormhbm.models.Musicien;
 import com.j4ltechnologies.sb.ormhbm.services.IMusicienService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * Classe MusicienController, créée le 21/05/2021 à 19:35
@@ -19,5 +23,15 @@ public class MusicienController {
         this.musicienService = musicienService;
     }
 
+    @GetMapping
+    public List<Musicien> getMusiciens() {
+        return musicienService.findAll();
+    }
 
+    @PostMapping
+    public void addMusicien(@RequestBody Musicien musicien) {
+        Set<Album> albums = musicien.getAlbums();
+        albums.forEach(a -> a.setMusicien(musicien));
+        musicienService.addMusicien(musicien);
+    }
 }
