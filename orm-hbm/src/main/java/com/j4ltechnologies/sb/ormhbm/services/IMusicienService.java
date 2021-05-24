@@ -4,6 +4,7 @@ import com.j4ltechnologies.sb.ormhbm.models.Musicien;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Classe MusicienService, créée le 21/05/2021 à 19:24
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public interface IMusicienService {
 
-    List<Musicien> findAll();
+    Set<Musicien> findAllMusiciens();
 
     Collection<Musicien> findAllWithAlbum();
 
@@ -20,7 +21,7 @@ public interface IMusicienService {
 
     Musicien findByPrenomAndNom(String prenom, String nom);
 
-    void addMusicien(Musicien musicien);
+    Musicien addMusicien(Musicien musicien);
 
     void deleteMusicienById(Integer id);
 

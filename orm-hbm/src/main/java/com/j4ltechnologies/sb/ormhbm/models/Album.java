@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * Classe Album, créée le 21/05/2021 à 18:28
@@ -19,12 +20,13 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
+@RequiredArgsConstructor
 @ToString(of = {"titre"})
-@EqualsAndHashCode(of = {"titre", "musicien"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Album extends BaseEntity{
+public class Album extends BaseEntity {
 
     @Column(nullable = false, unique = true, length = 100)
+    @NonNull
     String titre;
 
     LocalDate dds;
@@ -33,4 +35,26 @@ public class Album extends BaseEntity{
     @JoinColumn(name = "MUSICIEN_ID")
     @JsonIgnore
     Musicien musicien;
+
+    public Album(@NonNull String titre, LocalDate dds) {
+        this.titre = titre;
+        this.dds = dds;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Album album = (Album) o;
+        return titre.equalsIgnoreCase(album.titre) && musicien.equals(album.musicien);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(titre, musicien);
+    }
 }

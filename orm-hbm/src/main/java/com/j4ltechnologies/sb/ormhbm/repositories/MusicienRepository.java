@@ -12,7 +12,6 @@ import java.util.Collection;
  * Version: 1.0 du 21/05/2021
  */
 public interface MusicienRepository extends CrudRepository<Musicien, Integer> {
-
     Musicien findByPrenomAndNom(String prenom, String nom);
 
     @Query("select distinct m from Musicien m left join fetch m.albums a left join fetch m.instruments i")

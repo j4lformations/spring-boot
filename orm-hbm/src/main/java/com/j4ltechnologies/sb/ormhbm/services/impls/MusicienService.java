@@ -5,10 +5,7 @@ import com.j4ltechnologies.sb.ormhbm.repositories.MusicienRepository;
 import com.j4ltechnologies.sb.ormhbm.services.IMusicienService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Classe MusicienService, créée le 21/05/2021 à 19:26
@@ -25,8 +22,8 @@ public class MusicienService implements IMusicienService {
     }
 
     @Override
-    public List<Musicien> findAll() {
-        List<Musicien> musiciens = new ArrayList<>();
+    public Set<Musicien> findAllMusiciens() {
+        Set<Musicien> musiciens = new HashSet<>();
         Iterable<Musicien> liste = musicienRepository.findAll();
         liste.forEach(m -> musiciens.add(m));
         return musiciens;
@@ -48,8 +45,12 @@ public class MusicienService implements IMusicienService {
     }
 
     @Override
-    public void addMusicien(Musicien musicien) {
-        musicienRepository.save(musicien);
+    public Musicien addMusicien(Musicien musicien) {
+        Set<Musicien> musiciens = findAllMusiciens();
+        if (!musiciens.contains(musicien)) {
+            return musicienRepository.save(musicien);
+        }
+        return musicienRepository.findByPrenomAndNom(musicien.getPrenom(), musicien.getNom());
     }
 
     @Override

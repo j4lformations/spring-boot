@@ -9,5 +9,4 @@ class OrmHbmApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

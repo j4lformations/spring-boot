@@ -2,10 +2,12 @@ package com.j4ltechnologies.sb.ormhbm.models;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -18,7 +20,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @RequiredArgsConstructor
-@EqualsAndHashCode(of = {"prenom", "nom"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"prenom", "nom"}))
 public class Musicien extends BaseEntity {
@@ -36,10 +37,10 @@ public class Musicien extends BaseEntity {
     @Transient
     Integer age;
 
-    @OneToMany(mappedBy = "musicien", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "musicien")
     Set<Album> albums = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "MUSICIEN_INSTRUMENT",
             joinColumns = {
@@ -51,24 +52,46 @@ public class Musicien extends BaseEntity {
     )
     Set<Instrument> instruments = new HashSet<>();
 
+    public Musicien(@NonNull String prenom, @NonNull String nom, LocalDate ddn) {
+        this.prenom = prenom;
+        this.nom = nom;
+        this.ddn = ddn;
+    }
+
     @PostLoad
     private void init() {
+        prenom = StringUtils.capitalize(prenom);
+        nom = nom.toUpperCase();
         age = ddn.until(LocalDate.now()).getYears();
     }
 
     public void add(Album album) {
-        if (albums == null) {
-            albums = new HashSet<>();
-        }
-        albums.add(album);
+        album.setMusicien(this);
+        getAlbums().add(album);
+    }
+
+    public void removeAlbum(Album album) {
+        getAlbums().remove(album);
     }
 
     public void add(Instrument instrument) {
-        if (instruments == null) {
-            instruments = new HashSet<>();
-        }
-        instruments.add(instrument);
         instrument.getMusiciens().add(this);
+        instruments.add(instrument);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Musicien musicien = (Musicien) o;
+        return prenom.equalsIgnoreCase(musicien.prenom) && nom.equalsIgnoreCase(musicien.nom);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(prenom, nom);
     }
 
     @Override

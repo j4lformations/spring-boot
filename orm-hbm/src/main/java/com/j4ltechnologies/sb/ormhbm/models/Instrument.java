@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -20,15 +21,35 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString(of = {"nom"})
-@EqualsAndHashCode(of = {"nom"})
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Instrument{
+public class Instrument {
 
     @Id
     @Column(nullable = false, unique = true, length = 50)
+    @NonNull
     String nom;
+
+    public Instrument(@NonNull String nom) {
+        this.nom = nom;
+    }
 
     @ManyToMany(mappedBy = "instruments")
     @JsonIgnore
     Set<Musicien> musiciens = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Instrument that = (Instrument) o;
+        return nom.equalsIgnoreCase(that.nom);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nom);
+    }
 }
