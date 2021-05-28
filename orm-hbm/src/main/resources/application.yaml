@@ -3,19 +3,19 @@ spring:
     hibernate:
       ddl-auto: update
 
-    properties:
-      hibernate:
-        format_sql: true
-        use_sql_comments: true
-        max_fetch_depth: 3
-        jdbc:
-          batch_size: 10
-          fetch_size: 50
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        use_sql_comments: true
+#        max_fetch_depth: 3
+#        jdbc:
+#          batch_size: 10
+#          fetch_size: 50
 
-  h2:
-    console:
-      enabled: true
+#  h2:
+#    console:
+#      enabled: true
 
-  datasource:
-    url: 'jdbc:h2:~/H2-DB/orm-hbm;DB_CLOSE_ON_EXIT=false;'
-
+#  datasource:
+#    url: 'jdbc:h2:~/H2-DB/orm-hbm;DB_CLOSE_ON_EXIT=FALSE'
+#    url: 'jdbc:hsqldb:mem:orm-hbm;DB_CLOSE_DELAY=-1'

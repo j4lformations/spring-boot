@@ -25,7 +25,7 @@ public class MusicienService implements IMusicienService {
     public Set<Musicien> findAllMusiciens() {
         Set<Musicien> musiciens = new HashSet<>();
         Iterable<Musicien> liste = musicienRepository.findAll();
-        liste.forEach(m -> musiciens.add(m));
+        liste.forEach(musiciens::add);
         return musiciens;
     }
 

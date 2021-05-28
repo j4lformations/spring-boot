@@ -1,4 +1,4 @@
-package com.j4ltechnologies.sb.ormhbm.services.impls;
+package com.j4ltechnologies.sb.ormhbm.services;
 
 import com.j4ltechnologies.sb.ormhbm.models.Instrument;
 import org.junit.jupiter.api.Test;
@@ -9,15 +9,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * Classe InstrumentServiceTest, créée le 23/05/2021 à 17:40
+ * Classe IInstrumentServiceTest, créée le 27/05/2021 à 12:40
  * Author: Joachim Zadi
- * Version: 1.0 du 23/05/2021
+ * Version: 1.0 du 27/05/2021
  */
 @SpringBootTest
-class InstrumentServiceTest {
+class IInstrumentServiceTest {
 
     @Autowired
-    private InstrumentService service;
+    private IInstrumentService service;
 
     @Test
     void loadContext() {
@@ -26,7 +26,8 @@ class InstrumentServiceTest {
 
     @Test
     void allInstruments() {
-        assertEquals(service.allInstruments().size(),2);
+        assertEquals(service.allInstruments().size(), 5);
+        System.out.println(service.allInstruments());
     }
 
     @Test
@@ -40,13 +41,11 @@ class InstrumentServiceTest {
         Instrument instrument = new Instrument("Guitare");
         service.addInstrument(instrument);
         assertNotNull(service.allInstruments());
-        assertEquals(service.allInstruments().size(),1);
+        assertEquals(service.allInstruments().size(), 5);
 
-        instrument = new Instrument("Piano");
-        service.addInstrument(instrument);
-        assertEquals(service.allInstruments().size(),2);
-
-        service.addInstrument(instrument);
-        assertEquals(service.allInstruments().size(),2);
+        instrument = new Instrument("orgue");
+        instrument = service.addInstrument(instrument);
+        assertEquals(service.allInstruments().size(), 6);
+        System.out.println(instrument);
     }
 }

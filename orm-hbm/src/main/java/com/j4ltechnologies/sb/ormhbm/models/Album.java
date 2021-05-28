@@ -1,13 +1,13 @@
 package com.j4ltechnologies.sb.ormhbm.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -19,42 +19,46 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@RequiredArgsConstructor
-@ToString(of = {"titre"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Album extends BaseEntity {
 
     @Column(nullable = false, unique = true, length = 100)
-    @NonNull
     String titre;
 
     LocalDate dds;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "MUSICIEN_ID")
-    @JsonIgnore
     Musicien musicien;
 
-    public Album(@NonNull String titre, LocalDate dds) {
+    public Album(String titre, LocalDate dds) {
         this.titre = titre;
         this.dds = dds;
+        musicien = new Musicien();
+    }
+
+    public Album() {
+        this(null, null);
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
+        if (this == o) return true;
 
-        if (o == null || getClass() != o.getClass())
-            return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Album album = (Album) o;
-        return titre.equalsIgnoreCase(album.titre) && musicien.equals(album.musicien);
+
+        return new EqualsBuilder().append(titre, album.titre).append(musicien, album.musicien).isEquals();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(titre, musicien);
+        return new HashCodeBuilder(17, 37).append(titre).append(musicien).toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Album[" + titre + ", sortie le " + dds + ", par " + musicien.getPrenom() + " " + musicien.getNom() + "]";
     }
 }

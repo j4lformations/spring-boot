@@ -26,7 +26,7 @@ public class AlbumService implements IAlbumService {
     public Set<Album> allAlbums() {
         Set<Album> albums = new HashSet<>();
         Iterable<Album> albumIterable = repository.findAll();
-        albumIterable.forEach(a -> albums.add(a));
+        albumIterable.forEach(albums::add);
         return albums;
     }
 
@@ -38,7 +38,8 @@ public class AlbumService implements IAlbumService {
     @Override
     public Album addAlbum(Album album) {
         Set<Album> albums = allAlbums();
-        if (!albums.contains(album)) {
+        boolean resultat = !allAlbums().contains(album);
+        if (!allAlbums().contains(album)) {
             return repository.save(album);
         }
         return findByTitre(album.getTitre());

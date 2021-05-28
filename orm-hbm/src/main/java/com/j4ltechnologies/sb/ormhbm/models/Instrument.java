@@ -1,13 +1,10 @@
 package com.j4ltechnologies.sb.ormhbm.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.lang3.StringUtils;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -20,23 +17,24 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@ToString(of = {"nom"})
-@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Instrument {
 
     @Id
     @Column(nullable = false, unique = true, length = 50)
-    @NonNull
     String nom;
 
-    public Instrument(@NonNull String nom) {
+    public Instrument(String nom) {
         this.nom = nom;
+        musiciens =  new HashSet<>();
+    }
+
+    public Instrument() {
+        this(null);
     }
 
     @ManyToMany(mappedBy = "instruments")
-    @JsonIgnore
-    Set<Musicien> musiciens = new HashSet<>();
+    Set<Musicien> musiciens;
 
     @Override
     public boolean equals(Object o) {
@@ -51,5 +49,17 @@ public class Instrument {
     @Override
     public int hashCode() {
         return Objects.hash(nom);
+    }
+
+    @PostLoad
+    @PrePersist
+    @PreUpdate
+    private void init(){
+        nom = StringUtils.capitalize(nom);
+    }
+
+    @Override
+    public String toString() {
+        return nom;
     }
 }

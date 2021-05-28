@@ -2,6 +2,8 @@ package com.j4ltechnologies.sb.ormhbm.models;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -37,7 +39,11 @@ public class Musicien extends BaseEntity {
     @Transient
     Integer age;
 
-    @OneToMany(mappedBy = "musicien")
+    @OneToMany(
+            mappedBy = "musicien",
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.REMOVE, CascadeType.MERGE}
+    )
     Set<Album> albums = new HashSet<>();
 
     @ManyToMany
@@ -59,6 +65,8 @@ public class Musicien extends BaseEntity {
     }
 
     @PostLoad
+    @PrePersist
+    @PreUpdate
     private void init() {
         prenom = StringUtils.capitalize(prenom);
         nom = nom.toUpperCase();
@@ -83,15 +91,18 @@ public class Musicien extends BaseEntity {
     public boolean equals(Object o) {
         if (this == o)
             return true;
+
         if (o == null || getClass() != o.getClass())
             return false;
+
         Musicien musicien = (Musicien) o;
-        return prenom.equalsIgnoreCase(musicien.prenom) && nom.equalsIgnoreCase(musicien.nom);
+
+        return new EqualsBuilder().append(prenom, musicien.prenom).append(nom, musicien.nom).isEquals();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(prenom, nom);
+        return new HashCodeBuilder(17, 37).append(prenom).append(nom).toHashCode();
     }
 
     @Override

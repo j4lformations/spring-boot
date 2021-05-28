@@ -25,7 +25,7 @@ public class InstrumentService implements IInstrumentService {
     public Set<Instrument> allInstruments() {
         Set<Instrument> instruments = new HashSet<>();
         Iterable<Instrument> instrumentIterable = repository.findAll();
-        instrumentIterable.forEach(i -> instruments.add(i));
+        instrumentIterable.forEach(instruments::add);
         return instruments;
     }
 
