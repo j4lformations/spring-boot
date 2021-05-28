@@ -9,7 +9,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Objects;
 
 /**
  * Classe Album, créée le 21/05/2021 à 18:28
